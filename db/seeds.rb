@@ -119,5 +119,3 @@ Book.create!([
     short_description: "A boy survives a shipwreck and shares a lifeboat with a tiger."
   }
 ])
-
-#puts "Seeded #{Book.count} books successfully!"
