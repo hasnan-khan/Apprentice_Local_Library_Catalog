@@ -1,5 +1,4 @@
 class BooksController < ApplicationController
-
   # CREATE logic ================================
   # new Creates new Book instance. Should open new book form
   def new
@@ -63,5 +62,4 @@ class BooksController < ApplicationController
     params.require(:book).permit(:title, :author, :genre, :short_description)
     # TODO: Any additional sanitization necessary before making the db call?
   end
-
 end
