@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: apprentice-library-catalog
+    runtime: ruby
+    plan: free
+    buildCommand: "./bin/render-build.sh"
+    # Ensure Rails runs in production mode
+    startCommand: "bundle exec rails server"
+    envVars:
+      - key: RAILS_MASTER_KEY
+        sync: false
+      - key: RAILS_ENV
+        value: production
+      - key: RAILS_SERVE_STATIC_FILES
+        value: "true"
