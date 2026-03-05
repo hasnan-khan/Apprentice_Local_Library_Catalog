@@ -5,21 +5,37 @@
 
 <%# List books if non-empty %>
 <% if @books.any? %>
-    <ul>
+<div class="library">
+  <% @books.each_slice(8) do |shelf| %>
+    <div class="bookshelf">
         <%# Loop through each book and display its data %>
-        <% @books.each do |book| %>
-            <li>
-                <strong>Title:</strong> <%= book.title %><br>
-                <strong>Author:</strong> <%= book.author %><br>
-                <strong>Genre:</strong> <%= book.genre %><br>
+        <% shelf.each do |book| %>
+            <div class="book" onclick="toggleBook(this)">
+                <div class ="spine">
+                    <span class="title"><%= book.title %></span>
+                    <span class="author"><%= book.author %></span>
+                </div>
 
-                <%# Link to view the book %>
-                <%= link_to "View", book_path(book) %>
-                <%# Link to edit the book %>
-                <%= link_to "Edit", edit_book_path(book) %>
-            </li>
+                <div class="book-info">
+                    <h3><%= book.title %></h3>
+                    <p><strong>Author:</strong> <%= book.author %></p>
+ <% if book.genre.present? %>
+    <p><strong>Genre:</strong> <%= book.genre %></p>
+  <% end %>
+
+  <% if book.short_description? %>
+    <p><strong>Description:</strong></p>
+    <p><%= book.short_description %></p>
+  <% end %>
+
+                    <%# Link to edit the book %>
+                    <%= link_to "Edit", edit_book_path(book) %>
+                </div>
+            </div>
         <% end %>
-    </ul>
+    </div>
+    <% end %>
+</div>
 <% else %>
     <p>No books available.</p>
 <% end %>

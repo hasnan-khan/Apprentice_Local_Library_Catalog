@@ -3,8 +3,14 @@
 <%# Render the form partial %>
 <%= render "form", book: @book %>
 
+<hr>
+<%= button_to "Delete Book", book_path(@book),
+    method: :delete,
+    data: { confirm: "Are you sure you want to delete this book?" } %>
+
 <%# Link back to this book's page %>
 <%= link_to "Back to Book", book_path(@book) %>
 
 <%# Link back to the page with all the books %>
 <%= link_to "Back to Books", books_path %>
+
