@@ -16,5 +16,4 @@ Rails.application.routes.draw do
   #
   # Set home page to the books index.
   root "books#index"
-
 end
