@@ -12,6 +12,7 @@ class BooksController < ApplicationController
       redirect_to @book, notice: "#{@book.title} successfully added!"
     else
       render :new, status: :unprocessable_entity
+      # TODO Ensure View matches this
     end
   end
 
@@ -43,6 +44,7 @@ class BooksController < ApplicationController
       redirect_to @book, notice: "#{@book.title} successfully updated!" # confirmation notice
     else
       render :edit, status: :unprocessable_entity
+      # TODO Ensure View matches this
     end
   end
 
@@ -53,6 +55,7 @@ class BooksController < ApplicationController
     dt = @book.title # deleted title for explicit confirmation
     @book.destroy
     redirect_to books_path, notice: "#{dt} successfully removed!"
+    # TODO Ensure View matches this
   end
 
   private
