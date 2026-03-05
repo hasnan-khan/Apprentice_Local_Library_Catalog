@@ -1,29 +1,29 @@
-<%=# Display the book %>
+<%# Display the book %>
 <h1><%= @book.title %></h1>
 
-<%=# Display the author %>
+<%# Display the author %>
 <p>
     <strong>Author:</strong>
     <%= @book.author %>
 </p>
 
-<%=# Display the genre %>
+<%# Display the genre %>
 <p>
     <strong>Genre:</strong>
     <%= @book.genre %>
 </p>
 
-<%=# Display the description %>
+<%# Display the description %>
 <p>
     <strong>Short Description:</strong>
     <%= @book.short_description %>
 </p>
 
-<%=# Link to edit the book %>
+<%# Link to edit the book %>
 <%= link_to "Edit", edit_book_path(@book) %>
 
-<%=# Link to go back to all the books %>
+<%# Link to go back to all the books %>
 <%= link_to "Back to Books", books_path %>
 
-<%=# Delete button deletes the specific book %>
-<%= button_to "Delete", book_path(@book), method: :delete, data: { turbo_confirm: "Are you sure"}>
+<%# Delete button deletes the specific book %>
+<%= button_to "Delete", book_path(@book), method: :delete, data: { turbo_confirm: "Are you sure"} %>
