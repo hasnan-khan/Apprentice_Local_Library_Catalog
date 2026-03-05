@@ -3,7 +3,10 @@
 set -o errexit
 
 bundle install
-bin/rails assets:precompile
-bin/rails assets:clean
+bundle exec rails assets:precompile
+bundle exec rails assets:clean
 
-bin/rails db:migrate
+# Migrate all db
+bundle exec rails db:prepare
+# Specific 18-book seed for demo
+bundle exec rails db:seed
