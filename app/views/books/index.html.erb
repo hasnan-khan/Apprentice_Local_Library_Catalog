@@ -1,0 +1,25 @@
+<h1>Library Catalog</h1>
+
+<%=# Link to the form for adding a new book %>
+<%= link_to "Add New Book", new_book_path %>
+
+<%=# List books if non-empty %>
+<% if @books.any? %>
+    <ul>
+        <%=# Loop through each book and display its data %>
+        <% @books.each do |book| %>
+            <li>
+                <strong>Title:</strong> <%= book.title %><br>
+                <strong>Author:</strong> <%= book.author %><br>
+                <strong>Genre:</strong> <%= book.genre %><br>
+
+                <%=# Link to view the book %>
+                <%= link_to "View", book_path(book) %>
+                <%=# Link to edit the book %>
+                <%= link_to "Edit", edit_book_path(book) %>
+            </li>
+        <% end %>
+    </ul>
+<% else %>
+    <p>No books available.</p>
+<% end %>

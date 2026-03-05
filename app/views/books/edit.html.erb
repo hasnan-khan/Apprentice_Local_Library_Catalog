@@ -1,6 +1,10 @@
 <h1>Edit Book</h1>
 
+<%=# Render the form partial %>
 <%= render "form", book: @book %>
 
+<%=# Link back to this book's page %>
 <%= link_to "Back to Book", book_path(@book) %>
+
+<%=# Link back to the page with all the books %>
 <%= link_to "Back to Books", book_path %>
