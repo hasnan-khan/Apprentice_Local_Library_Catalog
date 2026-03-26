@@ -1,6 +1,17 @@
 Rails.application.routes.draw do
   resources :books
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+
+
+  namespace :odata do
+    namespace :v4 do
+      get "/", to: "service#root"
+      get "$metadata", to: "metadata#show"
+      get "books", to: "books#index"
+      get "books/:id", to: "books#show"
+
+      match "*path", to: "odata#not_found", via: :all
+    end
+  end
 
 
 
