@@ -1,58 +1,98 @@
-# Apprentice Local Library Catalog
+# Library Catalog System (v2.0)
 
-A professional, CRUD-compliant Ruby on Rails application developed as part of the **Nava PBC Apprentice Program**. This project serves as a centralized digital catalog for managing a local library's book inventory, featuring a fully integrated Model-View-Controller (MVC) architecture.
-
-## Quick Start
-To view the catalog immediately, the application is configured to boot directly to the library index.
-
-1. **Install Dependencies**: `bundle install`
-2. **Setup Database**: `bin/rails db:prepare` (Runs migrations and loads 18 core library seeds)
-3. **Start Server**: `bin/rails server --open` (Automatically opens `localhost:3000`)
-
----
+A hybrid software system featuring a public-facing Ruby on Rails portal for the community and a Salesforce Lightning interface for library staff. This project demonstrates cross-stack integration using the OData protocol to share a single source of truth.
 
 ## Technical Architecture
-This project was built using a collaborative team workflow, ensuring strict separation of concerns.
 
-### The "Bridge" (Controller & Routing)
-* **RESTful Routing**: Utilizes `resources :books` to map browser requests to backend logic.
-* **Root Configuration**: The application entry point is mapped to `books#index` for immediate catalog access.
-* **CRUD Logic**: The `BooksController` handles the lifecycle of book records, including strict parameter sanitization via **Strong Parameters** to prevent mass-assignment vulnerabilities.
+### Rails Public Portal
 
-### Data Integrity (Model & Schema)
-* **Schema Evolution**: The database includes the `short_description` text field to support rich book summaries.
-* **Validations**: Active Record validations ensure that every book entry contains a mandatory `title` and `author`.
-* **Seed Data**: A curated set of 18 classic and contemporary titles is included for immediate demonstration.
+- **Framework:** Ruby on Rails 8.1
 
-### User Interface (Views)
-* **Flash Notifications**: Integrated success notices (e.g., "Book successfully added!") are displayed via the global `application.html.erb` layout.
-* **Shared Forms**: Optimized `_form.html.erb` partial used for both creation and editing to ensure UI consistency.
+- **Primary Interface:** A RESTful web application for browsing, searching, and managing the book collection.
 
+- **Core Features:**
 
+  - Keyword search (Title/Author) and Genre filtering.
 
----
+  - Real-time availability tracking (Available, Checked Out, Reserved).
 
-## 🛠️ Development & Quality Assurance
-We maintain high standards for code quality and security.
+### Integration Bridge (OData API)
 
-* **Linting**: All code adheres to the project's RuboCop configuration for consistent Ruby styling.
-* **Security**: Protected against SQL injection via ActiveRecord's parameterized queries and Strong Parameters.
-* **Testing**: Automated CI pipeline verifies system and controller integrity on every push.
+The application serves as an OData V4 producer, allowing external systems to interact with the library database.
 
----
+- Service Root: `https://[YOUR-APP-URL]/odata/v4/`
 
-## 📂 Project Structure
+- Metadata: `https://[YOUR-APP-URL]/odata/v4/$metadata`
+
+- Books Endpoint: `https://[YOUR-APP-URL]/odata/v4/books`
+
+### Salesforce Staff Interface
+
+- **Connection:** Salesforce Connect via External Data Source.
+
+- **Staff Features:**
+
+  - **Lightning Web Components** (LWC) for viewing live Rails data.
+
+  - **Screen Flows** for logging Patron Recommendations.
+
+## API Reference (OData V4)
+
+### Example JSON Response (GET /odata/v4/books)
+
+```json
+[
+    {
+        "id": 1,
+        "title": "To Kill a Mockingbird",
+        "author": "Harper Lee",
+        "genre": "Fiction",
+        "short_description": "A story about racial injustice and moral growth in the American South.",
+        "status": "Available",
+        "created_at": "2026-03-03T21:15:59.000Z"
+    }
+]
+```
+
+## Security and Connectivity
+
+- **CORS:** Configured via `rack-cors` to permit cross-origin requests from Salesforce.
+
+- **Handshake:** Supports `$metadata` discovery for automatic Salesforce External Object mapping.
+
+## Development Setup
+
+1. Install Dependencies: ` bundle install `
+
+2. Setup Database: `bin/rails db:prepare (Loads 18 core library seeds)`
+
+3. Start Server: ` bin/rails server `
+
+4. Environment: Ensure `rack-cors` is configured in `config/initializers/cors.rb` for external connectivity.
+
+## Project Team
+- Amna (Rails): Search & Filter Logic.
+- Hasnan (Rails): Availability Status & Lifecycle Tracking.
+- Jeremy (Rails): OData API Architecture & Integration Bridge.
+- Lee (Salesforce): External Data Integration & Staff UI.
+
+## Project Structure
 ```text
 ├── app
 │   ├── controllers
-│   │   └── books_controller.rb    # Jeremy: Core CRUD logic
+│   │   ├── books_controller.rb             # Web UI Logic
+│   │   └── odata
+│   │       └── v4
+│   │           ├── books_controller.rb     # API CRUD Logic
+│   │           ├── metadata_controller.rb  # API Discovery
+│   │           └── service_controller.rb   # API Discovery
 │   ├── models
-│   │   └── book.rb                # Amna: Validations & Logic
-│   └── views
-│       └── books                  # Hasnan: UI & Partials
+    │   │   └── book.rb                     # Validations & Logic
 ├── config
-│   └── routes.rb                  # Jeremy: Application routing
-├── db
-│   ├── schema.rb                  # Database source of truth
-│   └── seeds.rb                   # 18 Initial book records
-└── test                           # Automated test suite
+│   ├── initializers
+│   │   └── cors.rb                         # API Security
+│   └── routes.rb                           # Application routing
+└── db
+    ├── schema.rb                           # Database source of truth
+└── seeds.rb                                # 18 Initial book records
+```

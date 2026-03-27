@@ -9,7 +9,7 @@ class BooksController < ApplicationController
   def create
     @book = Book.new(book_params)
     if @book.save
-      redirect_to @book , notice: "#{@book.title} successfully added!"
+      redirect_to @book, notice: "#{@book.title} successfully added!"
     else
       flash.now.alert = "Book not saved!"
       render :new, status: :unprocessable_entity
@@ -67,5 +67,4 @@ class BooksController < ApplicationController
     params.require(:book).permit(:title, :author, :genre, :short_description)
     # TODO: Any additional sanitization necessary before making the db call?
   end
-  
 end
