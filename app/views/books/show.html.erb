@@ -7,6 +7,12 @@
     <%= @book.author %>
 </p>
 
+<%# Display the status %>
+<p>
+    <strong>Status:</strong>
+    <span class ="<%= status_badge_class(@book.status) %>"><%= @book.status %></span>
+</p>
+
 <%# Display the genre %>
 <p>
     <strong>Genre:</strong>

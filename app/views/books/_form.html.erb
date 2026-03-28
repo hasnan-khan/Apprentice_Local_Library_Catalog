@@ -36,6 +36,12 @@
         <%= form.text_field :short_description %>
     </div>
 
+    <%# Status Input %>
+    <div>
+        <%= form.label :status %>
+        <%= form.select :status, Book::STATUSES, selected: (book.status || "Available") %>
+    </div>
+
     <%# Submit Button %>
     <div>
         <%= form.submit %>

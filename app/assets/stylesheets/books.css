@@ -107,3 +107,25 @@
 .book:hover {
   transform: rotate(-2deg);
 }
+
+.status-badge {
+  display: inline-block;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.status-badge--available {
+  background-color: #d1fae5;
+}
+
+.status-badge--checked-out {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+.status-badge--reserved {
+  background-color: #fef3c7;
+  color: #92400e;
+}

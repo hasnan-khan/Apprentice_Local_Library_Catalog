@@ -64,7 +64,7 @@ class BooksController < ApplicationController
 
   # Allows only our agreed book attributes to be sent to model db
   def book_params
-    params.require(:book).permit(:title, :author, :genre, :short_description)
+    params.require(:book).permit(:title, :author, :genre, :short_description, :status)
     # TODO: Any additional sanitization necessary before making the db call?
   end
 end
