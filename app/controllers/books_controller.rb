@@ -13,7 +13,6 @@ class BooksController < ApplicationController
     else
       flash.now.alert = "Book not saved!"
       render :new, status: :unprocessable_entity
-      # TODO Ensure View matches this
     end
   end
 
@@ -46,7 +45,6 @@ class BooksController < ApplicationController
     else
       flash.now.alert = "Book not updated!"
       render :edit, status: :unprocessable_entity
-      # TODO Ensure View matches this
     end
   end
 
@@ -57,14 +55,12 @@ class BooksController < ApplicationController
     dt = @book.title # deleted title for explicit confirmation
     @book.destroy
     redirect_to books_path, notice: "#{dt} successfully removed!"
-    # TODO Ensure View matches this
   end
 
   private
 
   # Allows only our agreed book attributes to be sent to model db
   def book_params
-    params.require(:book).permit(:title, :author, :genre, :short_description)
-    # TODO: Any additional sanitization necessary before making the db call?
+    params.require(:book).permit(:title, :author, :genre, :short_description, :status)
   end
 end

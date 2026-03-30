@@ -47,6 +47,6 @@ class Odata::V4::BooksController < ApplicationController
   private
 
   def book_params
-    params.require(:book).permit(:title, :author, :genre, :short_description)
+    params.require(:book).permit(:title, :author, :genre, :short_description, :status)
   end
 end
