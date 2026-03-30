@@ -15,3 +15,4 @@
 
 ## Security
 - patched following dependencies: [`action_text-trix`, `activestorage`, `json`, `loofah`] to resolve CI/CD Failures
+- patched `mcp` gem to `>= 0.9.2` to resolve CICD Failures for Vulnerabilities.
