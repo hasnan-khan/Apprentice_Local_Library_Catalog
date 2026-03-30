@@ -6,7 +6,7 @@ Rails.application.routes.draw do
     namespace :v4 do
       root to: "service#root"
       get "$metadata", to: "metadata#show"
-      resources :books, path: 'Books'
+      resources :books, path: "Books"
     end
   end
 
