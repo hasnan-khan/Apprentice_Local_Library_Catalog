@@ -3,14 +3,19 @@ class Odata::V4::BooksController < ApplicationController
 
   def index
     @books = Book.all
-    render json: @books
+    render json: {
+      "@odata.context" => odata_context_url,
+      "value" => Book.all
+    }
   end
 
   def show
     @book = Book.find_by(id: params[:id])
 
     if @book
-      render json: @book
+      render json: @book.as_json.merge({
+         "@odata_context" => "#{odata_context_url}/entity"
+                                       })
     else
       render json: { error: "Book not found" }, status: :not_found
     end
@@ -48,5 +53,9 @@ class Odata::V4::BooksController < ApplicationController
 
   def book_params
     params.require(:book).permit(:title, :author, :genre, :short_description, :status)
+  end
+
+  def odata_context_url
+    "#{request.base_url}/odata/v4/$metadata#Books"
   end
 end

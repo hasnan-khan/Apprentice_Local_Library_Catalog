@@ -26,6 +26,8 @@ The application serves as an OData V4 producer, allowing external systems to int
 
 - Books Endpoint: `https://[YOUR-APP-URL]/odata/v4/books`
 
+Replace `[YOUR-APP-URL]` with `http://localhost:3000` OR `https://apprentice-local-library-catalog.onrender.org.com` for either local or live
+
 ### Salesforce Staff Interface
 
 - **Connection:** Salesforce Connect via External Data Source.
@@ -38,7 +40,20 @@ The application serves as an OData V4 producer, allowing external systems to int
 
 ## API Reference (OData V4)
 
-### Example JSON Response (GET /odata/v4/books)
+### Notes for SalesForce Connect
+#### Connectivity
+Library Catalog URL: `https://apprentice-local-library-catalog.onrender.com/odata/v4/`
+_The trailing "/" is necessary._
+#### Authentication
+Authentication is bypassed. Identity type can be `Anonymous` and Authentication protocol `No Authentication`.
+#### Conventions
+- Using capitalized `Books` in URL to match controller casing and avoid SalesForce/Ruby collisions
+  - Fields/parameters: [`title`, `author`,`genre`,`status`,`short_description`]
+  - `External ID` should be in the layout, mapped to the `id`
+  - Book actions: [`index`; shows full list of catalogued Books, `create`; `POST` to create new Book, `update`; writes a `PATCH`to update specific field of a Book, `destroy`; `DELETE` book]
+
+### Example JSON Response 
+_URL:(https://apprentice-local-library-catalog.onrender.com/odata/v4/books/1)_
 
 ```json
 [

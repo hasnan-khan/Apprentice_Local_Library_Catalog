@@ -6,9 +6,7 @@ Rails.application.routes.draw do
     namespace :v4 do
       root to: "service#root"
       get "$metadata", to: "metadata#show"
-      resources :books
-
-      match "*path", to: "odata#not_found", via: :all
+      resources :books, path: 'Books'
     end
   end
 

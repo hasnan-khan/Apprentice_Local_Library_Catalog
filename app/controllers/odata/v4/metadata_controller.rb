@@ -17,13 +17,13 @@ class Odata::V4::MetadataController < ApplicationController
         <Property Name="status" Type="Edm.String" />
       </EntityType>
       <EntityContainer Name="DefaultContainer">
-        <EntitySet Name="books" EntityType="Library.Book" />
+        <EntitySet Name="Books" EntityType="Library.Book" />
       </EntityContainer>
     </Schema>
   </edmx:DataServices>
 </edmx:Edmx>
     XML
 
-    render xml: xml_content, content_type: "application/xml"
+    render xml: xml_content, layout: false, content_type: "application/xml"
   end
 end
