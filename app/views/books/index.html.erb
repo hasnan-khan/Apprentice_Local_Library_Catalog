@@ -19,6 +19,10 @@
                 <div class="book-info">
                     <h3><%= book.title %></h3>
                     <p><strong>Author:</strong> <%= book.author %></p>
+                    <p>
+                        <strong>Status:</strong>
+                        <span class ="<%= status_badge_class(book.status) %>"><%= book.status %></span>
+                    </p>
  <% if book.genre.present? %>
     <p><strong>Genre:</strong> <%= book.genre %></p>
   <% end %>
