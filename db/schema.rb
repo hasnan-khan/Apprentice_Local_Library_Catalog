@@ -16,6 +16,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_03_211559) do
     t.datetime "created_at", null: false
     t.string "genre"
     t.text "short_description"
+    t.string "status", default: "Available", null: false
     t.string "title"
     t.datetime "updated_at", null: false
   end
