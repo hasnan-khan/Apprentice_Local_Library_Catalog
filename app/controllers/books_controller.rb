@@ -13,7 +13,6 @@ class BooksController < ApplicationController
     else
       flash.now.alert = "Book not saved!"
       render :new, status: :unprocessable_entity
-      # TODO Ensure View matches this
     end
   end
 
@@ -26,7 +25,7 @@ class BooksController < ApplicationController
   # show Displays the detail page for a single Book instance. Sends READ call to model db
   def show
     # Get specific book by ID
-    @book = Book.find(params[:id])
+    @book = Book.find_by(id: params[:id])
   end
 
   # UPDATE logic ================================
@@ -46,7 +45,6 @@ class BooksController < ApplicationController
     else
       flash.now.alert = "Book not updated!"
       render :edit, status: :unprocessable_entity
-      # TODO Ensure View matches this
     end
   end
 
@@ -57,7 +55,6 @@ class BooksController < ApplicationController
     dt = @book.title # deleted title for explicit confirmation
     @book.destroy
     redirect_to books_path, notice: "#{dt} successfully removed!"
-    # TODO Ensure View matches this
   end
 
   private
@@ -65,6 +62,5 @@ class BooksController < ApplicationController
   # Allows only our agreed book attributes to be sent to model db
   def book_params
     params.require(:book).permit(:title, :author, :genre, :short_description, :status)
-    # TODO: Any additional sanitization necessary before making the db call?
   end
 end
