@@ -4,10 +4,9 @@ Rails.application.routes.draw do
 
   namespace :odata do
     namespace :v4 do
-      get "/", to: "service#root"
+      root to: "service#root"
       get "$metadata", to: "metadata#show"
-      get "books", to: "books#index"
-      get "books/:id", to: "books#show"
+      resources :books
 
       match "*path", to: "odata#not_found", via: :all
     end

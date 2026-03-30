@@ -1,11 +1,13 @@
 class Odata::V4::BooksController < ApplicationController
+  skip_before_action :verify_authenticity_token # TODO: Implement Authentication?
+
   def index
     @books = Book.all
     render json: @books
   end
 
   def show
-    @book = Book.find(params[:id])
+    @book = Book.find_by(id: params[:id])
 
     if @book
       render json: @book

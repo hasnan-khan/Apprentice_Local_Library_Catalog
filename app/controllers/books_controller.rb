@@ -26,7 +26,7 @@ class BooksController < ApplicationController
   # show Displays the detail page for a single Book instance. Sends READ call to model db
   def show
     # Get specific book by ID
-    @book = Book.find(params[:id])
+    @book = Book.find_by(id: params[:id])
   end
 
   # UPDATE logic ================================
