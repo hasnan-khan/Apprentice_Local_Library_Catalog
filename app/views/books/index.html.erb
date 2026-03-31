@@ -4,6 +4,21 @@
 <%= link_to "Add New Book", new_book_path %>
 
 <%# List books if non-empty %>
+
+<%= form_with url: books_path, method: :get, local: true do %>
+  <div>
+    <%= label_tag :search, "Search by Title or Author:" %>
+    <%= text_field_tag :search, params[:search], placeholder: "Enter title or author" %>
+  </div>
+
+  <div>
+    <%= label_tag :genre, "Filter by Genre:" %>
+    <%= select_tag :genre, options_for_select(@genres, params[:genre]), include_blank: "All Genres" %>
+  </div>
+
+  <%= submit_tag "Search" %>
+  <%= link_to "Clear Filters", books_path %>
+<% end %>
 <% if @books.any? %>
 <div class="library">
   <% @books.each_slice(8) do |shelf| %>
