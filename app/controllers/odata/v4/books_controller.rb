@@ -1,11 +1,10 @@
 class Odata::V4::BooksController < ApplicationController
   skip_before_action :verify_authenticity_token # TODO: Implement Authentication?
-
   def index
-    @books = Book.all
+    @books = apply_odata_filters(Book.all, params["$filter"])
     render json: {
-      "@odata.context" => odata_context_url,
-      "value" => Book.all
+      "@odata.context": "#{request.base_url}/odata/v4/$metadata#Books",
+      "value": @books
     }
   end
 
@@ -57,5 +56,23 @@ class Odata::V4::BooksController < ApplicationController
 
   def odata_context_url
     "#{request.base_url}/odata/v4/$metadata#Books"
+  end
+end
+
+def apply_odata_filters(scope, filter_param)
+  return scope if filter_param.blank?
+  case filter_param
+  when /id eq (\d+)/
+    scope.where(id: Regexp.last_match(1))
+  when /contains\(author,\s*'([^']+)'\)/i
+    search_term = Regexp.last_match(1)
+    scope.author_contains(search_term)
+  when /contains\(title,\s*'([^']+)'\)/i
+    search_term = Regexp.last_match(1)
+    scope.title_contains(search_term)
+  when /genre eq '([^']+)'/i
+    scope.where(genre: Regexp.last_match(1))
+  else
+    scope
   end
 end

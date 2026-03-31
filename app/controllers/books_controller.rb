@@ -37,7 +37,7 @@ class BooksController < ApplicationController
 
     respond_to do |format|
       # renders index.html.erb with filtered @books
-      format.html 
+      format.html
       format.json { render json: @books }
     end
   end
@@ -47,17 +47,13 @@ class BooksController < ApplicationController
     @book = Book.find_by(id: params[:id])
   end
 
-  # UPDATE logic ================================
-  # edit Opens single Book instance for edit. Should call the edit form in View
   def edit
-    # uses @book instanced variable as object to display attributes on edit form
     @book = Book.find(params[:id])
   end
 
   # update Saves changes to current Book instance. Send Update call to model db
   def update
     # writes the form content to @book instance
-    # makes UPDATE call to model with sanitized params
     @book = Book.find(params[:id])
     if @book.update(book_params)
       redirect_to @book, notice: "#{@book.title} successfully updated!" # confirmation notice
@@ -67,8 +63,6 @@ class BooksController < ApplicationController
     end
   end
 
-  # DESTROY logic ===============================
-  # destroy Removes book from library catalog. send Delete call to model db
   def destroy
     @book = Book.find(params[:id])
     dt = @book.title # deleted title for explicit confirmation
@@ -77,8 +71,6 @@ class BooksController < ApplicationController
   end
 
   private
-
-  # Allows only our agreed book attributes to be sent to model db
   def book_params
     params.require(:book).permit(:title, :author, :genre, :short_description, :status)
   end

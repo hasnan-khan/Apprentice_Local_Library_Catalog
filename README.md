@@ -77,7 +77,12 @@ _URL:(https://apprentice-local-library-catalog.onrender.com/odata/v4/books/1)_
 
 ## Development Setup
 
-1. Verify DependenciesInstall Dependencies: ` bundle install `
+### API Development
+#### Verify Dependencies
+- Install Dependencies:
+```bash
+bundle install
+```
 - In `config/routes.rb`:
 ```ruby
 # CORS needed for Salesforce Connect
@@ -100,7 +105,7 @@ brew install curl
 ```
 
 
-2. Setup Database:  (Loads 18 core library seeds)
+#### Setup Database:  (Loads 18 core library seeds)
 ```bash
 bin/rails db:prepare
 ```
@@ -113,30 +118,28 @@ bin/rails db:migrate
 bin/rails server
 ```
 
-## How to test:
+## Testing
 
 ### Browser:
+_It is important to note that the paths contain "Books" with a capital "B"_ and that once deployed, replacing localhost with the live URL will yield similar results.
 - visit:
 `http://localhost:3000/odata/v4/$metadata`  | Expect XML with book params
 - visit: 
-`http://localhost:3000/odata/v4/books`  | Expect json with all books in library
-- visit: `http://localhost:3000/odata/v4/books/5` | Any integer [1:18] returns a single book json
-### curl
+`http://localhost:3000/odata/v4/Books`  | Expect json with all books in library
+- visit: `http://localhost:3000/odata/v4/Books/5` | Any integer [1:18] returns a single book json
+### Terminal (via curl):
+#### Books Controller
+_Verify CRUD operations for Book objects._
 - Create a book:
 ```bash
-curl -X POST 'http://localhost:3000/odata/v4/books' \
+curl -X POST 'http://localhost:3000/odata/v4/Books' \
 -H "Content-Type: application/json" \
 -d '{"book": {"title": "OData API Mastery", "author": "Jeremy", "genre": "Technology", "short_description": "Testing the new status field.", "status": "Available"}}'
 ```
 _Expect Output: JSON with book info including an "id:"_
-- View that book:
-```bash
-curl 'http://localhost:3000/odata/v4/books/[YOUR_NEW_ID]'
-```
-_Expect Output: JSON with book info including an "id:"_
 - Update the book:
 ```bash
-curl -X PATCH 'http://localhost:3000/odata/v4/books/[YOUR_NEW_ID]' \
+curl -X PATCH 'http://localhost:3000/odata/v4/Books/[YOUR_NEW_ID]' \
 -H "Content-Type: application/json" \
 -d '{"book": {"status": "Checked Out"}}'
 ```
@@ -145,26 +148,38 @@ _Expect Output: JSON with book info now showing status: "Checked Out". If needed
 ```bash
 curl -i -X DELETE 'http://localhost:3000/odata/v4/books/[YOUR_NEW_ID]'
 ```
-_Expect Output (or similar):_
+_Expect Output with HTTP 2xx and No Content_
 ```text
 HTTP/1.1 204 No Content
-x-frame-options: SAMEORIGIN
-x-xss-protection: 0
-x-content-type-options: nosniff
-x-permitted-cross-domain-policies: none
-referrer-policy: strict-origin-when-cross-origin
-cache-control: no-cache
-x-request-id: ca52fd03-a96d-4573-9d27-81b1590ceddd
-x-runtime: 0.004761
-server-timing: start_processing.action_controller;dur=0.00, sql.active_record;dur=0.69, instantiation.active_record;dur=0.04, start_transaction.active_record;dur=0.00, transaction.active_record;dur=0.64, process_action.action_controller;dur=2.73
-vary: Origin
 ```
-- Verify the delete
+- Verify the delete (and confirm error render for no book matching id)
 ```bash
 curl 'http://localhost:3000/odata/v4/books/[YOUR_NEW_ID]'
 ```
 _Expect Output:_
 `{"error":"Book not found"}`
+
+#### Filters (mimic Salesforce URL calls)
+- Filter by id
+```bash
+ curl -g "http://localhost:3000/odata/v4/Books?\$filter=id%20eq%201"
+ ```
+_Expect JSON object with one book. This example should return "To Kill A Mockingbird" on base seed database._
+- Filter by author
+```bash
+curl -g "http://localhost:3000/odata/v4/Books?\$filter=contains(author,'ing')"
+```
+_Expect JSON object with books by Stephen King and J.K. Rowling (multiple). Can test single entries with specific author or nil with an Author not in Library._
+- Filter by title
+```bash
+curl -g "http://localhost:3000/odata/v4/Books?\$filter=contains(title,'the')"
+```
+_Expect JSON object with multiple book entries. Similarly, can be tested with "Gatsby" for one book or "Lord of the Flies" for a nil return._
+- Filter by genre
+```bash
+curl -g "http://localhost:3000/odata/v4/Books?\$filter=genre%20eq%20'Romance'"
+```
+_Assuming finite list of genres. Returns all books which match criteria._
 ## Project Team
 - Amna (Rails): Search & Filter Logic.
 - Hasnan (Rails): Availability Status & Lifecycle Tracking.
@@ -173,6 +188,13 @@ _Expect Output:_
 
 ## Project Structure
 ```text
+.
+├── CHANGELOG.md
+├── Dockerfile
+├── Gemfile
+├── Gemfile.lock
+├── README.md
+├── Rakefile
 ├── app
 │   ├── assets
 │   │   ├── images
@@ -187,6 +209,7 @@ _Expect Output:_
 │   │       └── v4
 │   │           ├── books_controller.rb
 │   │           ├── metadata_controller.rb
+│   │           ├── recommendations_controller.rb
 │   │           └── service_controller.rb
 │   ├── helpers
 │   │   ├── application_helper.rb
@@ -205,7 +228,9 @@ _Expect Output:_
 │   ├── models
 │   │   ├── application_record.rb
 │   │   ├── book.rb
-│   │   └── concerns
+│   │   ├── concerns
+│   │   ├── recommendation.rb
+│   │   └── request_note.rb
 │   └── views
 │       ├── books
 │       │   ├── _form.html.erb
@@ -219,5 +244,54 @@ _Expect Output:_
 │       │   └── mailer.text.erb
 │       └── pwa
 │           ├── manifest.json.erb
-│           └── service-worker.js                            # 18 Initial book records
+│           └── service-worker.js
+├── config
+│   ├── application.rb
+│   ├── boot.rb
+│   ├── bundler-audit.yml
+│   ├── cable.yml
+│   ├── cache.yml
+│   ├── ci.rb
+│   ├── credentials.yml.enc
+│   ├── database.yml
+│   ├── deploy.yml
+│   ├── environment.rb
+│   ├── environments
+│   │   ├── development.rb
+│   │   ├── production.rb
+│   │   └── test.rb
+│   ├── importmap.rb
+│   ├── initializers
+│   │   ├── assets.rb
+│   │   ├── content_security_policy.rb
+│   │   ├── cors.rb
+│   │   ├── filter_parameter_logging.rb
+│   │   └── inflections.rb
+│   ├── locales
+│   │   └── en.yml
+│   ├── master.key
+│   ├── puma.rb
+│   ├── queue.yml
+│   ├── recurring.yml
+│   ├── routes.rb
+│   └── storage.yml
+├── config.ru
+├── db
+│   ├── cable_schema.rb
+│   ├── cache_schema.rb
+│   ├── migrate
+│   │   ├── 20250327200500_add_status_to_books.rb
+│   │   ├── 20260303211559_create_books.rb
+│   │   ├── 20260330195343_create_recommendations.rb
+│   │   ├── 20260330195405_create_request_notes.rb
+│   │   └── 20260331173857_change_request_count_default.rb
+│   ├── queue_schema.rb
+│   ├── schema.rb
+│   └── seeds.rb
+├── lib
+│   └── tasks
+├── render.yaml
+└── tree.txt
+
+28 directories, 76 files
 ```
