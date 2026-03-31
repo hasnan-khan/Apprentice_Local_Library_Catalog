@@ -21,6 +21,25 @@ class BooksController < ApplicationController
   def index
     # instance variable is used by View to iterate over list of books.
     @books = Book.all
+
+    @genres = Book.distinct.pluck(:genre).compact
+
+    # apply search filter (title or author)
+    if params[:search].present? && params[:search] != ""
+      search_term = "%#{params[:search]}%"
+      @books = @books.where("title LIKE ? COLLATE NOCASE OR author LIKE ? COLLATE NOCASE", search_term, search_term)
+    end
+
+    # apply genre filter
+    if params[:genre].present? && params[:genre] != ""
+      @books = @books.where(genre: params[:genre])
+    end
+
+    respond_to do |format|
+      # renders index.html.erb with filtered @books
+      format.html 
+      format.json { render json: @books }
+    end
   end
   # show Displays the detail page for a single Book instance. Sends READ call to model db
   def show
