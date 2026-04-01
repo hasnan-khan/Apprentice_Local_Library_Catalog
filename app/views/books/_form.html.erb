@@ -1,5 +1,5 @@
 <%# Shared form used by both new and edit pages %>
-<%= form_with model: book do |form| %>
+<%= form_with model: book, html: { class: "book-form-container" } do |form| %>
     <%# Checks for validation errors %>
     <% if book.errors.any? %>
         <div>
@@ -13,37 +13,37 @@
     <% end %>
 
     <%# Title input %>
-    <div>
+    <div class="book-form-field">
         <%= form.label :title %>
         <%= form.text_field :title %>
     </div>
 
     <%# Author Input %>
-    <div>
+    <div class="book-form-field">
         <%= form.label :author %>
         <%= form.text_field :author %>
     </div>
 
     <%# Genre Input %>
-    <div>
+    <div class="book-form-field">
         <%= form.label :genre %>
         <%= form.text_field :genre %>
     </div>
 
     <%# Short Description Input %>
-    <div>
+    <div class="book-form-field">
         <%= form.label :short_description %>
         <%= form.text_field :short_description %>
     </div>
 
     <%# Status Input %>
-    <div>
+    <div class="book-form-field">
         <%= form.label :status %>
         <%= form.select :status, Book::STATUSES, selected: (book.status || "Available") %>
     </div>
 
     <%# Submit Button %>
-    <div>
+    <div class="book-form-submit">
         <%= form.submit %>
     </div>
 <% end %>

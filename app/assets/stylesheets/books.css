@@ -129,3 +129,106 @@
   background-color: #fef3c7;
   color: #92400e;
 }
+
+/* Add New Book Form Page */
+.book-form-container {
+  max-width: 520px;
+  margin: 40px auto;
+  background: #5C3B1E;
+  border: 12px solid #3B2510;
+  box-shadow: 0 8px 12px rgba(0,0,0,0.3);
+  padding: 30px;
+}
+
+.book-form-container h1 {
+  color: #D4A96A;
+  font-size: 1.4rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-top: 0;
+  margin-bottom: 24px;
+  border-bottom: 1px solid #8B5A2B;
+  padding-bottom: 12px;
+}
+
+/* Error box */
+.book-form-errors {
+  background: #2C1A0E;
+  border: 1px solid #C0392B;
+  border-radius: 3px;
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  color: #F5E6C8;
+  font-size: 13px;
+}
+
+.book-form-errors h2 {
+  color: #C0392B;
+  font-size: 13px;
+  margin: 0 0 8px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.book-form-errors ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
+/* Form fields */
+.book-form-field {
+  margin-bottom: 16px;
+}
+
+.book-form-field label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #D4A96A;
+  margin-bottom: 6px;
+}
+
+.book-form-field input[type="text"],
+.book-form-field select {
+  width: 100%;
+  background: #2C1A0E;
+  color: #F5E6C8;
+  border: 1px solid #8B5A2B;
+  border-radius: 3px;
+  padding: 8px 12px;
+  font-size: 14px;
+  box-sizing: border-box;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.book-form-field input[type="text"]:focus,
+.book-form-field select:focus {
+  border-color: #D4A96A;
+}
+
+.book-form-field select option {
+  background: #2C1A0E;
+}
+
+/* Submit button */
+.book-form-submit input[type="submit"] {
+  background: #8B5A2B;
+  color: #F5E6C8;
+  border: none;
+  border-radius: 3px;
+  padding: 10px 24px;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 8px;
+}
+
+.book-form-submit input[type="submit"]:hover {
+  background: #A0692F;
+}
