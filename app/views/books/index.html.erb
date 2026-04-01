@@ -5,7 +5,7 @@
 
 <%# List books if non-empty %>
 
-<%= form_with url: books_path, method: :get, local: true do %>
+<%= form_with url: books_path, method: :get, local: true, html: { class: "search-bar" } do%>
   <div>
     <%= label_tag :search, "Search by Title or Author:" %>
     <%= text_field_tag :search, params[:search], placeholder: "Enter title or author" %>
