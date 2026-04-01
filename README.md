@@ -24,7 +24,7 @@ The application serves as an OData V4 producer, allowing external systems to int
 
 - Metadata: `https://[YOUR-APP-URL]/odata/v4/$metadata`
 
-- Books Endpoint: `https://[YOUR-APP-URL]/odata/v4/books`
+- Books Endpoint: `https://[YOUR-APP-URL]/odata/v4/Books`
 
 Replace `[YOUR-APP-URL]` with `http://localhost:3000` OR `https://apprentice-local-library-catalog.onrender.org.com` for either local or live
 
@@ -53,7 +53,7 @@ Authentication is bypassed. Identity type can be `Anonymous` and Authentication 
   - Book actions: [`index`; shows full list of catalogued Books, `create`; `POST` to create new Book, `update`; writes a `PATCH`to update specific field of a Book, `destroy`; `DELETE` book]
 
 ### Example JSON Response 
-_URL:(https://apprentice-local-library-catalog.onrender.com/odata/v4/books/1)_
+_URL:(https://apprentice-local-library-catalog.onrender.com/odata/v4/Books/1)_
 
 ```json
 [
@@ -123,38 +123,39 @@ bin/rails server
 ### Browser:
 _It is important to note that the paths contain "Books" with a capital "B"_ and that once deployed, replacing localhost with the live URL will yield similar results.
 - visit:
-`http://localhost:3000/odata/v4/$metadata`  | Expect XML with book params
-- visit: 
-`http://localhost:3000/odata/v4/Books`  | Expect json with all books in library
-- visit: `http://localhost:3000/odata/v4/Books/5` | Any integer [1:18] returns a single book json
+`http://apprentice-local-library-catalog.onrender.com` and interact with UI
+  - Add book
+  - Edit Book
+  - Delete Book
+  - Search by Author, Title or Genre
 ### Terminal (via curl):
 #### Books Controller
-_Verify CRUD operations for Book objects._
+_Verify CRUD operations for Book objects. This can also be done via localhost:3000 (https not enforced)_
 - Create a book:
 ```bash
-curl -X POST 'http://localhost:3000/odata/v4/Books' \
+curl -X POST 'https://apprentice-local-library-catalog.onrender.com/odata/v4/Books' \
 -H "Content-Type: application/json" \
 -d '{"book": {"title": "OData API Mastery", "author": "Jeremy", "genre": "Technology", "short_description": "Testing the new status field.", "status": "Available"}}'
 ```
 _Expect Output: JSON with book info including an "id:"_
 - Update the book:
 ```bash
-curl -X PATCH 'http://localhost:3000/odata/v4/Books/[YOUR_NEW_ID]' \
+curl -X PATCH 'https://apprentice-local-library-catalog.onrender.com/odata/v4/Books/[YOUR_NEW_ID]' \
 -H "Content-Type: application/json" \
 -d '{"book": {"status": "Checked Out"}}'
 ```
 _Expect Output: JSON with book info now showing status: "Checked Out". If needed, run the read curl again to verify._
 - Delete the book:
 ```bash
-curl -i -X DELETE 'http://localhost:3000/odata/v4/books/[YOUR_NEW_ID]'
+curl -i -X DELETE 'https://apprentice-local-library-catalog.onrender.com/odata/v4/Books/[YOUR_NEW_ID]'
 ```
 _Expect Output with HTTP 2xx and No Content_
 ```text
 HTTP/1.1 204 No Content
 ```
-- Verify the delete (and confirm error render for no book matching id)
+- Verify the deletion (and confirm error render for no book matching id)
 ```bash
-curl 'http://localhost:3000/odata/v4/books/[YOUR_NEW_ID]'
+curl 'https://apprentice-local-library-catalog.onrender.com/odata/v4/Books/[YOUR_NEW_ID]'
 ```
 _Expect Output:_
 `{"error":"Book not found"}`
@@ -162,22 +163,22 @@ _Expect Output:_
 #### Filters (mimic Salesforce URL calls)
 - Filter by id
 ```bash
- curl -g "http://localhost:3000/odata/v4/Books?\$filter=id%20eq%201"
+ curl -g "https://apprentice-local-library-catalog.onrender.com/odata/v4/Books?\$filter=id%20eq%201"
  ```
 _Expect JSON object with one book. This example should return "To Kill A Mockingbird" on base seed database._
 - Filter by author
 ```bash
-curl -g "http://localhost:3000/odata/v4/Books?\$filter=contains(author,'ing')"
+curl -g "https://apprentice-local-library-catalog.onrender.com/odata/v4/Books?\$filter=contains(author,'ing')"
 ```
 _Expect JSON object with books by Stephen King and J.K. Rowling (multiple). Can test single entries with specific author or nil with an Author not in Library._
 - Filter by title
 ```bash
-curl -g "http://localhost:3000/odata/v4/Books?\$filter=contains(title,'the')"
+curl -g "https://apprentice-local-library-catalog.onrender.com/odata/v4/Books?\$filter=contains(title,'the')"
 ```
 _Expect JSON object with multiple book entries. Similarly, can be tested with "Gatsby" for one book or "Lord of the Flies" for a nil return._
 - Filter by genre
 ```bash
-curl -g "http://localhost:3000/odata/v4/Books?\$filter=genre%20eq%20'Romance'"
+curl -g "https://apprentice-local-library-catalog.onrender.com/odata/v4/Books?\$filter=genre%20eq%20'Romance'"
 ```
 _Assuming finite list of genres. Returns all books which match criteria._
 ## Project Team

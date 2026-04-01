@@ -3,12 +3,14 @@
 ## V2.0_Unreleased 2026-03-30
 
 ## Added
-- Salesforce bridge via OData v4 API Endpoints (`/odata/v4/Books`)
+- Implemented Search and Filter functionality to the library's web-based UI
+- Salesforce bridge via OData v4 API Endpoints (`/odata/v4/Books`, `odata/v4/Recommendations`)
+  - Added URL parsing to handle salesforce requests better
 - Metadata handshake for SalesForce Connect 
   - Added XML CSDL generation at `/$metadata`
 - Configured `rack-cors` to allow cross-origin requests from staff portal
   - currently accepts "anything" from "anywhere". *may want to improve security
-- Implemented availability status in `book` model. `status:`
+- Implemented availability status in `Book` model. `status:`
 - `Recommendation` class to handle patron book recommendations (requests) for books to be added to library.
 - `RecommendationsController` class to handle recommendation (request) flow.
 - `RequestNotes` class (belongs to `Recommendation`) to serve as individual "notes" or "comments" for a book recommendation from separate patrons.
@@ -16,7 +18,8 @@
 
 ## Changed
 - Replaced `find` with `find_by` in controllers to handle 404 errors more gracefully. (`error` JSON)
-- `books` path explicitly capitalized to help with Salesforce matching to controller class names. `URL/odata/v4/Books`
+- `books` path explicitly capitalized to help with Salesforce matching to controller class names. `https://url_to_server/odata/v4/Books`
+- Fixed issue where querying a single book by id returned the full library, causing Salesforce to render only the first record
 
 ## Security
 - patched following dependencies: [`action_text-trix`, `activestorage`, `json`, `loofah`] to resolve CI/CD Failures
