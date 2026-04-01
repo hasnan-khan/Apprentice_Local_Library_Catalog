@@ -129,3 +129,83 @@
   background-color: #fef3c7;
   color: #92400e;
 }
+
+/* Search & Filter Bar */
+.search-bar {
+  background: #5C3B1E;
+  border: 12px solid #3B2510;
+box-shadow: 0 8px 12px rgba(0,0,0,0.3);
+padding: 20px 30px;
+display: flex;
+align-items: flex-end;
+gap: 16px;
+flex-wrap: wrap;
+margin-bottom: 10px;
+}
+
+.search-bar label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #D4A96A;
+  margin-bottom: 6px;
+}
+
+.search-bar input[type="text"],
+.search-bar select {
+  background: #2C1A0E;
+  color: #F5E6C8;
+  border: 1px solid #8B5A2B;
+  border-radius: 3px;
+  padding: 8px 12px;
+  font-size: 14px;
+  width: 220px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.search-bar input[type="text"]::placeholder {
+  color: #7A5C3A;
+}
+
+.search-bar input[type="text"]:focus,
+.search-bar select:focus {
+  border-color: #D4A96A;
+}
+
+.search-bar select option {
+  background: #2C1A0E;
+}
+
+.search-bar input[type="submit"] {
+  background: #8B5A2B;
+  color: #F5E6C8;
+  border: none;
+  border-radius: 3px;
+  padding: 8px 18px;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.search-bar input[type="submit"]:hover {
+  background: #A0692F;
+}
+
+.search-bar a {
+  color: #D4A96A;
+  font-size: 12px;
+  text-decoration: none;
+  padding-bottom: 2px;
+  border-bottom: 1px solid #8B5A2B;
+  transition: color 0.2s;
+}
+
+.search-bar a:hover {
+  color: #F5E6C8;
+}
