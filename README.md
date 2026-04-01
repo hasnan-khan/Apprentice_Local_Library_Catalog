@@ -182,10 +182,10 @@ curl -g "https://apprentice-local-library-catalog.onrender.com/odata/v4/Books?\$
 ```
 _Assuming finite list of genres. Returns all books which match criteria._
 ## Project Team
-- Amna (Rails): Search & Filter Logic.
-- Hasnan (Rails): Availability Status & Lifecycle Tracking.
+- Amna (Rails): Search & Filter Logic, Data models, & Web-based UI.
+- Hasnan (Rails): Availability Status, Web-based UI & Lifecycle Tracking.
 - Jeremy (Rails): OData API Architecture & Integration Bridge.
-- Lee (Salesforce): External Data Integration & Staff UI.
+- Lee (Salesforce): External Data Integration & Staff Portal.
 
 ## Project Structure
 ```text
