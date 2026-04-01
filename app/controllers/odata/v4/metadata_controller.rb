@@ -15,7 +15,18 @@ class Odata::V4::MetadataController < ApplicationController
         <Property Name="genre" Type="Edm.String" />
         <Property Name="short_description" Type="Edm.String" />
         <Property Name="status" Type="Edm.String" />
-      </EntityType>
+      </EntityType> <!--END Book-->
+      <!--Recommendation-->
+      <EntityType Name="Recommendation">
+        <Key>
+          <PropertyRef Name="id" />
+        </Key>
+        <Property Name="id" Type="Edm.Int32" Nullable="false" />
+        <Property Name="title" Type="Edm.String" />
+        <Property Name="author" Type="Edm.String" />
+        <Property Name="status" Type="Edm.String" />
+        <Property Name="request_count" Type="Edm.Int32" />
+      </EntityType> <!--End Recommendation-->
       <EntityContainer Name="DefaultContainer">
         <EntitySet Name="Books" EntityType="Library.Book" />
       </EntityContainer>

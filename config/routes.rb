@@ -7,6 +7,7 @@ Rails.application.routes.draw do
       root to: "service#root"
       get "$metadata", to: "metadata#show"
       resources :books, path: "Books"
+      resources :recommendations, path: "Recommendations"
     end
   end
 

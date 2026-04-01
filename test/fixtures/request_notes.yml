@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  recommendation: one
+  patron_name: MyString
+  note_text: MyText
+
+two:
+  recommendation: two
+  patron_name: MyString
+  note_text: MyText
