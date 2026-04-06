@@ -66,16 +66,15 @@ def apply_odata_filters(scope, filter_param)
     scope.where(id: Regexp.last_match(1))
   when /id eq (\d+)/i
   scope.where(id: Regexp.last_match(1))
-  when /contains\(author,\s*'([^']+)'\)/i
-    search_term = Regexp.last_match(1)
-    scope.author_contains(search_term)
-  when /author eq ?([^']+)?/i
-    scope.where(author: Regexp.last_match(1))
+  when /author eq ([^']+)/i
+      search_term = Regexp.last_match(1)
+      scope.author_contains(search_term)
   when /contains\(title,\s*'([^']+)'\)/i
     search_term = Regexp.last_match(1)
     scope.title_contains(search_term)
-  when /title eq ?([^']+)?/i
-    scope.where(title: Regexp.last_match(1))
+  when /title eq ([^']+)/i
+    search_term = Regexp.last_match(1)
+    scope.title_contains(search_term)
   when /genre eq '([^']+)'/i
     scope.where(genre: Regexp.last_match(1))
   else
