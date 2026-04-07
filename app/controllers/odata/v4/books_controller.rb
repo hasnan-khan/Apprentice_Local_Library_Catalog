@@ -1,8 +1,8 @@
 class Odata::V4::BooksController < ApplicationController
   skip_before_action :verify_authenticity_token # TODO: Implement Authentication?
   def index
-    Rails.logger.info("**\nSalesforce Odata Filter: #{params["$filter"].inspect}")
-    Rails.logger.info(" Full request params: #{params.to_unsafe_h.inspect}")
+    Rails.logger.info("\n**{\n❗ Salesforce Odata Filter: #{params["$filter"].inspect}\n")
+    Rails.logger.info("\n❗ Full request params: #{params.to_unsafe_h.inspect}\n**}\n")
     @books = apply_odata_filters(Book.all, params["$filter"])
     render json: {
       "@odata.context": "#{request.base_url}/odata/v4/$metadata#Books",
@@ -62,23 +62,29 @@ class Odata::V4::BooksController < ApplicationController
 end
 
 def apply_odata_filters(scope, filter_param)
-  Rails.logger.info("\n🚨 ODATA FILTER RECEIVED: #{filter_param.inspect}\n")
+  Rails.logger.info("\n🚨 Applying Odata Filters: #{filter_param.inspect}\n")
   return scope if filter_param.blank?
   case filter_param
   when /ExternalId eq (\d+)/
+    Rails.logger.info("\n🪪 Filtered by ExternalId: #{filter_param.inspect}\n")
     scope.where(id: Regexp.last_match(1))
   when /id eq (\d+)/i
-  scope.where(id: Regexp.last_match(1))
+    Rails.logger.info("\n🪪 Filtered by id: #{filter_param.inspect}\n")
+    scope.where(id: Regexp.last_match(1))
   when /contains\(author,\s*'([^']+)'\)/i
-      search_term = Regexp.last_match(1)
-      scope.author_contains(search_term)
+    Rails.logger.info("\n🖋 Filtered by author: #{filter_param.inspect}\n")
+
+    search_term = Regexp.last_match(1)
+    scope.author_contains(search_term)
   when /contains\(title,\s*'([^']+)'\)/i
+    Rails.logger.info("\n📘 Filtered by title: #{filter_param.inspect}\n")
     search_term = Regexp.last_match(1)
     scope.title_contains(search_term)
-  when /title eq ([^']+)/i
-    search_term = Regexp.last_match(1)
-    scope.title_contains(search_term)
+  # when /title eq ([^']+)/i
+  #   search_term = Regexp.last_match(1)
+  #   scope.title_contains(search_term)
   when /genre eq '([^']+)'/i
+    Rails.logger.info("\nFiltered by genre: #{filter_param.inspect}\n")
     scope.where(genre: Regexp.last_match(1))
   else
     Rails.logger.warn("⚠️ UNRECOGNIZED ODATA FILTER: #{filter_param.inspect}. Defaulting to returning all books.")
