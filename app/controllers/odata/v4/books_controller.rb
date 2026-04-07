@@ -1,6 +1,8 @@
 class Odata::V4::BooksController < ApplicationController
   skip_before_action :verify_authenticity_token # TODO: Implement Authentication?
   def index
+    Rails.logger.info("**\nSalesforce Odata Filter: #{params["$filter"].inspect}")
+    Rails.logger.info(" Full request params: #{params.to_unsafe_h.inspect}")
     @books = apply_odata_filters(Book.all, params["$filter"])
     render json: {
       "@odata.context": "#{request.base_url}/odata/v4/$metadata#Books",
@@ -60,6 +62,7 @@ class Odata::V4::BooksController < ApplicationController
 end
 
 def apply_odata_filters(scope, filter_param)
+  Rails.logger.info("\n🚨 ODATA FILTER RECEIVED: #{filter_param.inspect}\n")
   return scope if filter_param.blank?
   case filter_param
   when /ExternalId eq (\d+)/
@@ -78,6 +81,7 @@ def apply_odata_filters(scope, filter_param)
   when /genre eq '([^']+)'/i
     scope.where(genre: Regexp.last_match(1))
   else
+    Rails.logger.warn("⚠️ UNRECOGNIZED ODATA FILTER: #{filter_param.inspect}. Defaulting to returning all books.")
     scope
   end
 end
