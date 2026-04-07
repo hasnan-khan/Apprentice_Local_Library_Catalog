@@ -65,6 +65,15 @@ def apply_odata_filters(scope, filter_param)
   Rails.logger.info("\n🚨 Applying Odata Filters: #{filter_param.inspect}\n")
   return scope if filter_param.blank?
   case filter_param
+  when /contains\(short_description,'([^']+)'\) eq true or contains\(author/i
+    Rails.logger.info("\n🌍 Global Search triggered: #{filter_param.inspect}\n")
+    search_term = Regexp.last_match(1)
+
+    scope.where("short_description LIKE ?", "%#{search_term}%")
+         .or(scope.where("author LIKE ?", "%#{search_term}%"))
+         .or(scope.where("genre LIKE ?", "%#{search_term}%"))
+         .or(scope.where("title LIKE ?", "%#{search_term}%"))
+         .or(scope.where("status LIKE ?", "%#{search_term}%"))
   when /ExternalId eq (\d+)/
     Rails.logger.info("\n🪪 Filtered by ExternalId: #{filter_param.inspect}\n")
     scope.where(id: Regexp.last_match(1))
