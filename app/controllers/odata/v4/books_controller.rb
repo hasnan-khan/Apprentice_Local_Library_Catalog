@@ -80,19 +80,22 @@ def apply_odata_filters(scope, filter_param)
   when /id eq (\d+)/i
     Rails.logger.info("\n🪪 Filtered by id: #{filter_param.inspect}\n")
     scope.where(id: Regexp.last_match(1))
-  when /contains\(author,\s*'([^']+)'\)/i
+  when /id eq (\d+)/i
+    Rails.logger.info("\n🪪 Filtered by id: #{filter_param.inspect}\n")
+    scope.where(id: Regexp.last_match(1))
+  when /contains\(author,\s*'([^']+)'\)/i # ToDo: Can be removed if we don't use individual search fields
     Rails.logger.info("\n🖋 Filtered by author: #{filter_param.inspect}\n")
 
     search_term = Regexp.last_match(1)
     scope.author_contains(search_term)
-  when /contains\(title,\s*'([^']+)'\)/i
+  when /contains\(title,\s*'([^']+)'\)/i # ToDo: Can be removed if we don't use individual search fields
     Rails.logger.info("\n📘 Filtered by title: #{filter_param.inspect}\n")
     search_term = Regexp.last_match(1)
     scope.title_contains(search_term)
-  # when /title eq ([^']+)/i
-  #   search_term = Regexp.last_match(1)
-  #   scope.title_contains(search_term)
-  when /genre eq '([^']+)'/i
+    # when /title eq ([^']+)/i
+    #   search_term = Regexp.last_match(1)
+    #   scope.title_contains(search_term)
+  when /genre eq '([^']+)'/i # ToDo: Can be removed if we don't use individual search fields
     Rails.logger.info("\nFiltered by genre: #{filter_param.inspect}\n")
     scope.where(genre: Regexp.last_match(1))
   else
